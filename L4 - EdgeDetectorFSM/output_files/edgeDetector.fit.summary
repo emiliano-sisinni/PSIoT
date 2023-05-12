@@ -1,0 +1,20 @@
+Fitter Status : Successful - Thu May  4 11:17:59 2023
+Quartus Prime Version : 20.1.0 Build 711 06/05/2020 SJ Lite Edition
+Revision Name : edgeDetector
+Top-level Entity Name : edgeDetector
+Family : Cyclone V
+Device : 5CSEBA6U23I7S
+Timing Models : Final
+Logic utilization (in ALMs) : 232 / 41,910 ( < 1 % )
+Total registers : 434
+Total pins : 13 / 314 ( 4 % )
+Total virtual pins : 0
+Total block memory bits : 640 / 5,662,720 ( < 1 % )
+Total RAM Blocks : 1 / 553 ( < 1 % )
+Total DSP Blocks : 0 / 112 ( 0 % )
+Total HSSI RX PCSs : 0
+Total HSSI PMA RX Deserializers : 0
+Total HSSI TX PCSs : 0
+Total HSSI PMA TX Serializers : 0
+Total PLLs : 0 / 6 ( 0 % )
+Total DLLs : 0 / 4 ( 0 % )

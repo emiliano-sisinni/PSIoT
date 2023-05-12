@@ -1,0 +1,28 @@
+|edgeDetector
+FPGA_CLK1_50 => stateMealy_reg.CLK
+FPGA_CLK1_50 => stateMoore_reg~1.DATAIN
+SW[0] => stateMealy_reg.ACLR
+SW[0] => stateMoore_reg~3.DATAIN
+SW[1] => stateMealy_next.OUTPUTSELECT
+SW[1] => Mealy_tick.DATAB
+SW[1] => stateMoore_next.OUTPUTSELECT
+SW[1] => stateMoore_next.OUTPUTSELECT
+SW[1] => stateMoore_next.OUTPUTSELECT
+SW[1] => Selector2.IN5
+SW[1] => stateMealy_next.OUTPUTSELECT
+SW[1] => stateMoore_next.OUTPUTSELECT
+SW[1] => stateMoore_next.OUTPUTSELECT
+SW[1] => stateMoore_next.OUTPUTSELECT
+SW[1] => Selector0.IN1
+SW[2] => ~NO_FANOUT~
+SW[3] => ~NO_FANOUT~
+LED[0] <= Mealy_tick.DB_MAX_OUTPUT_PORT_TYPE
+LED[1] <= Moore_tick.DB_MAX_OUTPUT_PORT_TYPE
+LED[2] <= <GND>
+LED[3] <= <GND>
+LED[4] <= <GND>
+LED[5] <= <GND>
+LED[6] <= <GND>
+LED[7] <= <GND>
+
+
