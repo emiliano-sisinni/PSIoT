@@ -1,0 +1,49 @@
+{
+	"partitions" : [
+		{
+			"name" : "Top",
+			"pins" : [
+				{
+					"name" : "LED[0]",
+					"strict" : false
+				},
+				{
+					"name" : "LED[1]",
+					"strict" : false
+				},
+				{
+					"name" : "ARDUINO_IO[5]",
+					"strict" : false
+				},
+				{
+					"name" : "ARDUINO_IO[6]",
+					"strict" : false
+				},
+				{
+					"name" : "ARDUINO_IO[7]",
+					"strict" : false
+				},
+				{
+					"name" : "ARDUINO_IO[11]",
+					"strict" : false
+				},
+				{
+					"name" : "ARDUINO_IO[12]",
+					"strict" : false
+				},
+				{
+					"name" : "ARDUINO_IO[13]",
+					"strict" : false
+				},
+				{
+					"name" : "FPGA_CLK1_50",
+					"strict" : false
+				},
+				{
+					"name" : "KEY[0]",
+					"strict" : false
+				}
+			]
+		}
+	]
+}

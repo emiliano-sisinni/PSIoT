@@ -1,0 +1,43 @@
+-------------------------------------------------
+-- Project : SPI FIR       		              --
+-- Author : Emiliano Sisinni                   --
+-- Date : AY2021/2022                          --
+-- Company : UniBS                             --
+-- File : top.vhd   		                       --
+-------------------------------------------------
+
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity top_spiloopback is
+	port(
+		FPGA_CLK1_50: in std_logic;
+		SW: in std_logic_vector(3 downto 0);
+		KEY: in std_logic_vector(2 downto 0);
+		LED: out std_logic_vector(1 downto 0);
+		ARDUINO_IO: inout std_logic_vector(15 downto 0));
+end top;
+
+architecture top_arch of top_spiloopback is
+begin
+
+	spi0:entity work.basic_spi 
+	generic map(
+			DATA_W 	=> 16,			-- FIFO and SPI data width in bits
+			Nbit 	=> 4 					-- log2(data width)
+			)
+	port map(
+		OSC_FPGA => FPGA_CLK1_50,
+		PB => KEY(1 downto 0),
+		SYS_SPI_MOSI => ARDUINO_IO(11),
+		SYS_SPI_MISO => ARDUINO_IO(12),
+		SYS_SPI_SCK => ARDUINO_IO(13),
+		LED => LED(1 downto 0)
+		);
+		
+		ARDUINO_IO(7) <= ARDUINO_IO(11);
+		ARDUINO_IO(6) <= ARDUINO_IO(12);
+		ARDUINO_IO(5) <= ARDUINO_IO(13);
+		
+
+end top_arch;

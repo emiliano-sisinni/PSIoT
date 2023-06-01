@@ -1,0 +1,20 @@
+Fitter Status : Successful - Thu May 18 13:48:46 2023
+Quartus Prime Version : 20.1.0 Build 711 06/05/2020 SJ Lite Edition
+Revision Name : top_spiloopback
+Top-level Entity Name : top_spiloopback
+Family : Cyclone V
+Device : 5CSEBA6U23I7
+Timing Models : Final
+Logic utilization (in ALMs) : 317 / 41,910 ( < 1 % )
+Total registers : 637
+Total pins : 26 / 314 ( 8 % )
+Total virtual pins : 0
+Total block memory bits : 49,152 / 5,662,720 ( < 1 % )
+Total RAM Blocks : 6 / 553 ( 1 % )
+Total DSP Blocks : 0 / 112 ( 0 % )
+Total HSSI RX PCSs : 0
+Total HSSI PMA RX Deserializers : 0
+Total HSSI TX PCSs : 0
+Total HSSI PMA TX Serializers : 0
+Total PLLs : 0 / 6 ( 0 % )
+Total DLLs : 0 / 4 ( 0 % )
