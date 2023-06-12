@@ -49,18 +49,19 @@ The following software is needed. All the tools are free, but you will need to c
 Download the following by choosing the latest available Quartus Lite version. This guide will use version 20.1:
 
 - Quartus Prime Lite Edition
-  - Quartus Prime (Includes Nios II EDS)
+  - Quartus Prime Lite (Includes Nios II EDS)
   - ModelSim-Intel FPGA Edition (includes Starter Edition)
     (Required for design simulation)
   - Cyclone V device support
-- Quartus Standard Edition
+
+The Development Suite can be downloaded from Intel site as well (https://www.intel.com/content/www/us/en/software-kit/661080/intel-soc-fpga-embedded-development-suite-soc-eds-standard-edition-software-version-20-1-for-linux.html)
   - Intel SoC FPGA Embedded Development Suite Standard Edition
 
 Refer to the screenshots below:
 
-![](images/quartus_download1.png)
+![](Images/quartus_download1.png)
 
-![EDS](images/quartus_download2.png)
+![EDS](Images/quartus_download2.png)
 
 Quartus Prime installer can install the other tools as well if they are all present in the same directory. So it is advisable to wait until all the files are downloaded before you install them.
 
@@ -95,29 +96,7 @@ echo "export PATH=$HOME/intelFPGA_lite/20.1/quartus/bin:\$PATH" >> ~/.bash_alias
 echo "export PATH=$HOME/intelFPGA_lite/20.1/embedded:\$PATH" >> ~/.bash_aliases
 ```
 
-### [Optional] Access JTAG as normal user
-
-If you want to program the de10-nano as a simple FPGA, you will need to use the JTAG programmer present on the board and set the MSEL pins as follows:
-
-1-ON
-
-2-OFF
-
-3-ON
-
-4-ON
-
-5-OFF
-
-In [Manjaro linux](https://manjaro.org/) the JTAG programmer on the de10-nano is not accessible as a normal user. This makes it a bit annoying to program the device when working with quartus.
-
-One option is to just `sudo` the command line `quartus_pgm` to program your device. The syntax and example command to do this is as follows:
-
-```bash
-sudo quartus_pgm -m JTAG -o "p;/home/mango/fpga/de10-nano-30-sep-21/blink/output_files/blink.sof@2"
-```
-
-But if you'd like to use the Programmer available in the Tools menu in Quartus, then you need to change the permissions for the usb device to be accessible to everyone.
+If you'd like to use the Programmer available in the Tools menu in Quartus, then you need to change the permissions for the usb device to be accessible to everyone.
 
 After connecting the cable to your machine, run `lsusb` to list all the usb devices:
 
@@ -144,6 +123,8 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="09fb", ATTR{idProduct}=="6010", MODE="0666", 
 Save the file and exit. Restart your machine and the device should now be accessible to all users.
 
 This completes the Quartus section of the setup.
+
+It is possible to reassign rights in this way: sudo chmod 666 /dev/bus/usb/001/013
 
 ## Working Directory
 
