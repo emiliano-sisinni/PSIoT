@@ -1,28 +1,11 @@
-# Setting up the Development Environment
+The content of the file is derived from contributions by [Zangman](https://github.com/zangman/de10-nano/blob/master/docs/Setting-up-the-Development-Environment.md) and [VHDLWhiz](https://vhdlwhiz.com/modelsim-quartus-prime-lite-ubuntu-20-04/) repositories.
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-- [Summary](#summary)
-- [Operating System](#operating-system)
-  - [Important: Storage space](#important-storage-space)
-  - [Setting up sudo](#setting-up-sudo)
-- [Quartus Download and Install](#quartus-download-and-install)
-  - [[Optional] Access JTAG as normal user](#optional-access-jtag-as-normal-user)
-- [Working Directory](#working-directory)
-- [ARM Compiler](#arm-compiler)
-  - [Get a suitable ARM compiler](#get-a-suitable-arm-compiler)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-## Summary
+# Summary
 
 Here we will take some time to set up our development environment. This environment will be similar to what was used for creating this guide. This will ensure that:
 
 - All the commands used in this guide work seamlessly.
 - You can close your session and/or restart your terminal without having to do the set up again.
-
-The content of the file is derived from https://github.com/zangman/de10-nano/blob/master/docs/Setting-up-the-Development-Environment.md
 
 ## Operating System
 
@@ -44,24 +27,16 @@ You can also choose not to use sudo. Simply run the command `su` to become root 
 
 ## Quartus Download and Install
 
-The following software is needed. All the tools are free, but you will need to create an account in order to download. The software can be obtained from [Intel's FPGA Software Download Center](https://www.intel.com/content/www/us/en/collections/products/fpga/software/downloads.html?s=Newest).
+The following software is needed. All the tools are free, but you will need to create an account in order to download. The software can be obtained from [Intel's FPGA Software Download Center](https://www.intel.com/content/www/us/en/software-kit/661017/intel-quartus-prime-lite-edition-design-software-version-20-1-for-linux.html).
 
-Download the following by choosing the latest available Quartus Lite version. This guide will use version 20.1:
+This guide will use version 20.1. Choose to download "Indivual files" and select:
 
 - Quartus Prime Lite Edition
-  - Quartus Prime Lite (Includes Nios II EDS)
-  - ModelSim-Intel FPGA Edition (includes Starter Edition)
-    (Required for design simulation)
+  - ModelSim-Intel FPGA Edition (includes Starter Edition)    (Required for design simulation)
   - Cyclone V device support
 
-The Development Suite can be downloaded from Intel site as well (https://www.intel.com/content/www/us/en/software-kit/661080/intel-soc-fpga-embedded-development-suite-soc-eds-standard-edition-software-version-20-1-for-linux.html)
-  - Intel SoC FPGA Embedded Development Suite Standard Edition
+The Intel SoC FPGA Embedded Development Suite Standard Edition can be downloaded from [Intel's FPGA Software Download Center](https://www.intel.com/content/www/us/en/software-kit/661080/intel-soc-fpga-embedded-development-suite-soc-eds-standard-edition-software-version-20-1-for-linux.html) as well.
 
-Refer to the screenshots below:
-
-![](Images/quartus_download1.png)
-
-![EDS](Images/quartus_download2.png)
 
 Quartus Prime installer can install the other tools as well if they are all present in the same directory. So it is advisable to wait until all the files are downloaded before you install them.
 
@@ -72,7 +47,7 @@ cd ~/Downloads/quartus_downloads/
 chmod +x *.run
 
 # Install Quartus Prime. Replace this with the version you downloaded.
-# This takes 15-20 mins to complete.
+# This takes few mins to complete.
 # The default install location is fine i.e. ~/intelFPGA_lite
 ./QuartusLiteSetup-20.1.0.711-linux.run
 
@@ -96,6 +71,7 @@ echo "export PATH=$HOME/intelFPGA_lite/20.1/quartus/bin:\$PATH" >> ~/.bash_alias
 echo "export PATH=$HOME/intelFPGA_lite/20.1/embedded:\$PATH" >> ~/.bash_aliases
 ```
 
+### Access USB Blaster
 If you'd like to use the Programmer available in the Tools menu in Quartus, then you need to change the permissions for the usb device to be accessible to everyone.
 
 After connecting the cable to your machine, run `lsusb` to list all the usb devices:
@@ -111,20 +87,26 @@ Bus 001 Device 013: ID 09fb:6810 Altera
 We need to set up a udev rule for this as follows. Create a new file as follows:
 
 ```bash
-sudo vim /etc/udev/rules.d/45-altera.rules
+sudo gedit /etc/udev/rules.d/51-usbblaster.rules
 ```
 
 Paste the following after replacing the values correspondingly from `lsusb`:
 
 ```bash
-SUBSYSTEM=="usb", ATTR{idVendor}=="09fb", ATTR{idProduct}=="6010", MODE="0666", GROUP="users"
+# USB Blaster II
+SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="09fb", ATTR{idProduct}=="6010", MODE="0666", NAME="bus/usb/$env{BUSNUM}/$env{DEVNUM}", RUN+="/bin/chmod 0666 %c"
+SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="09fb", ATTR{idProduct}=="6810", MODE="0666", NAME="bus/usb/$env{BUSNUM}/$env{DEVNUM}", RUN+="/bin/chmod 0666 %c"
+
 ```
 
 Save the file and exit. Restart your machine and the device should now be accessible to all users.
 
-This completes the Quartus section of the setup.
+However, it is possible to reassign rights in this way (change bus and device number as needed): 
+```bash
+sudo chmod 666 /dev/bus/usb/001/013
+```
 
-It is possible to reassign rights in this way: sudo chmod 666 /dev/bus/usb/001/013
+This completes the Quartus section of the setup.
 
 ## Working Directory
 
@@ -193,7 +175,57 @@ echo "export CROSS_COMPILE=$DEWD/gcc-arm-10.3-2021.07-x86_64-arm-none-linux-gnue
 >
 > If `CROSS_COMPILE` is not set, then it uses the system default `gcc`. If it is set, it uses the version specified by the variable.
 
-<p align="right">Next | <b><a href="Building-Embedded-Linux.md">Building Embedded Linux - The Basics</a></b>
-<br/>
-<p align="right">Back | <b><a href="Introduction-to-DE10-Nano.md">Introduction to DE10-Nano</a></p>
-</b><p align="center"><sup>Getting Started | </sup><a href="../README.md#getting-started"><sup>Table of Contents</sup></a></p>
+## Enable ModelSim - free version
+The ModelSim version that comes with Intel Quartus Prime Lite Edition is a good alternative if youwant to try out VHDL simulation on your home computer. The software is available for bothWindows and Linux.  Unfortunately, the free version is a 32-bit application and supposing you have a 64-bit OS, dependencies must be satisfied adding 32-bit version of required libraries. For your convenience, a resume of the procedure is in the following.
+
+```bash
+# Open a terminal in your home directory
+  
+# Update your system
+sudo apt update; sudo apt upgrade
+  
+# Make the vco script writable
+chmod u+w ~/intelFPGA_lite/*.*/modelsim_ase/vco
+  
+# Make a backup of the vco file
+(cd ~/intelFPGA/*.*/modelsim_ase/ && cp vco vco_original)
+  
+# Edit the vco script manually, or with these commands:
+sed -i 's/linux\_rh[[:digit:]]\+/linux/g' \
+    ~/intelFPGA_lite/*.*/modelsim_ase/vco
+sed -i 's/MTI_VCO_MODE:-""/MTI_VCO_MODE:-"32"/g' \
+    ~/intelFPGA_lite/*.*/modelsim_ase/vco
+sed -i '/dir=`dirname "$arg0"`/a export LD_LIBRARY_PATH=${dir}/lib32' \
+    ~/intelFPGA_lite/*.*/modelsim_ase/vco
+  
+ 
+# Download the 32-bit libraries and build essentials
+sudo dpkg --add-architecture i386
+sudo apt update
+sudo apt install build-essential
+    sudo apt install gcc-multilib g++-multilib lib32z1 \
+    lib32stdc++6 lib32gcc1 libxt6:i386 libxtst6:i386 expat:i386 \
+    fontconfig:i386 libfreetype6:i386 libexpat1:i386 libc6:i386 \
+    libgtk-3-0:i386 libcanberra0:i386 libice6:i386 libsm6:i386 \
+    libncurses5:i386 zlib1g:i386 libx11-6:i386 libxau6:i386 \
+    libxdmcp6:i386 libxext6:i386 libxft2:i386 libxrender1:i386
+  
+# Download the old 32-bit version of libfreetype
+wget https://ftp.osuosl.org/pub/blfs/conglomeration/freetype/freetype-2.4.12.tar.bz2
+tar xjf freetype-2.4.12.tar.bz2
+  
+# Compile libfreetype
+cd freetype-2.4.12/
+./configure --build=i686-pc-linux-gnu "CFLAGS=-m32" \
+    "CXXFLAGS=-m32" "LDFLAGS=-m32"
+make clean
+make
+  
+cd ~/intelFPGA_lite/*.*/modelsim_ase/
+mkdir lib32
+cp ~/freetype-2.4.12/objs/.libs/libfreetype.so* lib32/
+  
+# Run the vsim script to start ModelSim
+cd
+~/intelFPGA_lite/*.*/modelsim_ase/bin/vsim
+```
